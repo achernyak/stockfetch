@@ -74,7 +74,23 @@ var Stockfetch = function() {
     this.printReport();
   };
 
-  this.printReport = function() {};
+  this.printReport = function() {
+    if(this.tickersCount ===
+      Object.keys(this.prices).length + Object.keys(this.errors).length)
+      this.reportCallback(this.sortData(this.prices), this.sortData(this.errors));
+  };
+
+  this.sortData = function(dataToSort) {
+    var toArray = function(key) { return [key, dataToSort[key]]; };
+    return Object.keys(dataToSort).sort().map(toArray);
+  };
+
+  this.reportCallback = function() {};
+
+  this.getPriceForTickers = function(fileName, displayFn, errorFn) {
+    this.reportCallback = displayFn;
+    this.readTickersFile(fileName, errorFn);
+  };
 };
 
 module.exports = Stockfetch;
